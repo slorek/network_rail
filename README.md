@@ -1,6 +1,6 @@
 # National Rail Data Feeds Ruby Gem
 
-Provides a convenient Ruby wrapper for the [National Rail Data Feeds](https://datafeeds.networkrail.co.uk).
+Provides a convenient Ruby wrapper for the [National Rail Data Feeds](https://datafeeds.networkrail.co.uk) - a live 'firehose' of real-time data about train timings and movements on the national UK rail network.
 
 ## Installation
 
@@ -16,9 +16,54 @@ Or install it yourself as:
 
     $ gem install national_rail
 
-## Usage
+## Pre-Requisites
 
-TODO: Write usage instructions here
+### Register an account
+
+You must first register an account on the [National Rail Data Feeds](https://datafeeds.networkrail.co.uk) web site. The user name and password you choose will be used for authenticating with the service via the gem.
+
+The service supports only a limited number of users, so you will need to wait for your account status to change to 'Active' before you can use the gem. You will be e-mailed by National Rail when this happens.
+
+If you do no access the data feeds for for 30 days, your account may switch to an 'Inactive' state, which will prevent you accessing the feeds.
+
+### Subscribe to feeds
+
+Once you're in, you need to subscribe to feeds on the [National Rail Data Feeds](https://datafeeds.networkrail.co.uk) web site in order to be able to receive them.
+
+## Quick Start
+
+First set your National Rail user name and password:
+    
+    NationalRail.configure do |config|
+      config.user_name = YOUR_EMAIL_ADDRESS
+      config.password  = YOUR_PASSWORD
+    end
+
+You don't need to supply your security token because this isn't yet used (according to the documentation in the [Developer Pack](http://www.networkrail.co.uk/WorkArea/DownloadAsset.aspx?id=30064782140)).
+
+The gem implements a Stomp client to allow you to consume the data feeds, and parses each messages into a convenient Ruby object. Once the client is loaded, it will continue listening for new messages until you tell it to stop.
+
+### Starting the client
+
+You need to load the client to establish the connection between yourself and the feed provider. Create a new instance of the client as below.
+
+    client = NationalRail::Client.new
+    
+### Subscribing to feeds
+
+Each client can listen to one or more data feeds. You need to specify a feed to begin receiving data. For example:
+
+    client.train_movements(operator: :all) do |movement|
+      # Do something
+    end
+
+Messages will begin to arrive from National Rail in batches every few seconds. In the above example, `movement` will be an instance of a subclass of `NationalRail::Message::TrainMovement` (e.g. `NationalRail::Message::TrainMovement::Arrival`). Some of the cool things you can do with this object are:
+
+- Check if the train arrived on time with `movement.on_time?`
+- Get the delay (if any) with `movement.delay`
+- Determine the next station the train is due to stop at with `movement.next_station`
+
+You can set the threshold at which a train is considered 'late' in the gem configuration.
 
 ## Contributing
 
@@ -27,3 +72,5 @@ TODO: Write usage instructions here
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+This gem is created by Steven Lorek and is under the MIT License.
