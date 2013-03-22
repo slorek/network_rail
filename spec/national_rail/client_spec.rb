@@ -1,11 +1,15 @@
 require 'spec_helper'
 
 describe NationalRail::Client do
-  
-  let(:user_name) { 'test' }
-  let(:password) { 'test' }
-  
   describe "#new" do
+    before do
+      @stomp_client = stub("Stomp::Client",
+        open?: true,
+        protocol: Stomp::SPL_11,
+        connection_frame: stub(command: true)
+      )
+    end
+    
     context "without login credentials" do
       it "raises an exception" do
         lambda {
@@ -15,28 +19,23 @@ describe NationalRail::Client do
     end
 
     context "with login credentials" do
-      before(:all) do
+      before(:all) do        
         NationalRail.configure do |config|
-          config.user_name = user_name
-          config.password = password
+          config.user_name = 'test'
+          config.password = 'test'
         end
       end
       
       it "passes the login credentials in the request" do
-        Stomp::Client.any_instance.should_receive(:new).once.with(hash_including(hosts: [hash_including(login: user_name, password: password)]))
+        Stomp::Client.should_receive(:new).once do |options|
+          options[:hosts][0][:login].should == 'test'
+          options[:hosts][0][:passcode].should == 'test'
+        end.and_return(@stomp_client)
         client = described_class.new
       end
       
       context "after connection attempt" do
         before(:each) do
-          @stomp_client = stub("Stomp::Client",
-            open?: true,
-            protocol: Stomp::SPL_11,
-            connection_frame: {
-              command: true
-            }
-          )
-          
           Stomp::Client.stub(:new).and_return(@stomp_client)
         end
         
@@ -51,6 +50,7 @@ describe NationalRail::Client do
 
         context "when there is an authentication error" do
           it "raises an exception" do
+            @stomp_client.stub(:connection_frame).and_return(stub(command: Stomp::CMD_ERROR, body: "java.lang.SecurityException: User name [test] or password is invalid. (RuntimeError)"))
             lambda {
               client = described_class.new
             }.should raise_exception(NationalRail::Exception::AuthenticationError)
@@ -59,7 +59,7 @@ describe NationalRail::Client do
 
         context "when there is an unexpected error" do
           it "raises an exception" do
-            @stomp_client.stub(:connection_frame).and_return({ command: Stomp::CMD_ERROR })
+            @stomp_client.stub(:connection_frame).and_return(stub(command: Stomp::CMD_ERROR, body: ''))
             lambda {
               client = described_class.new
             }.should raise_exception(NationalRail::Exception::ConnectionError)
