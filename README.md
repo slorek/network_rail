@@ -65,6 +65,16 @@ Messages will begin to arrive from National Rail in batches every few seconds. I
 
 You can set the threshold at which a train is considered 'late' in the gem configuration.
 
+## Threading
+
+The client runs on a separate thread, so once you've subscribed to all your feeds you need to ensure execution of your script doesn't end immediately. This can be most easily accomplished with something like this:
+
+    while true
+      # Continue forever
+    end
+
+Add your own control logic if you need to do anything more complicated.
+
 ## Contributing
 
 1. Fork it
