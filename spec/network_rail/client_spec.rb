@@ -78,7 +78,6 @@ describe NetworkRail::Client do
   end
   
   describe "#train_movements" do
-    
     before do
       NetworkRail.configure do |config|
         config.user_name = 'test'
@@ -106,6 +105,32 @@ describe NetworkRail::Client do
       it "maps the operator parameter to the Network Rail business code and subscribes to the train movements feed" do
         @stomp_client.should_receive(:subscribe).once.with("/topic/TRAIN_MVT_HY_TOC")
         @client.train_movements(operator: :south_west_trains) {|i| }
+      end
+    end
+    
+    describe "parsing responses" do
+      before do
+        @stomp_client.stub(:subscribe).and_yield(fixture('train_movements.json'))
+      end
+      
+      it "calls NetworkRail::Message::TrainMovement#factory for each message received" do
+        NetworkRail::Message::TrainMovement.should_receive(:factory).exactly(10).times
+        @client.train_movements {|i| }
+      end
+      
+      it "yields an instance of NetworkRail::Message::TrainMovement for each message received" do
+        expect {|b| @client.train_movements(&b) }.to yield_successive_args(
+          NetworkRail::Message::TrainMovement::Arrival,
+          NetworkRail::Message::TrainMovement::Departure,
+          NetworkRail::Message::TrainMovement::Arrival,
+          NetworkRail::Message::TrainMovement::Departure,
+          NetworkRail::Message::TrainMovement::Departure,
+          NetworkRail::Message::TrainMovement::Arrival,
+          NetworkRail::Message::TrainMovement::Arrival,
+          NetworkRail::Message::TrainMovement::Arrival,
+          NetworkRail::Message::TrainMovement::Departure,
+          NetworkRail::Message::TrainMovement::Departure
+        )
       end
     end
   end

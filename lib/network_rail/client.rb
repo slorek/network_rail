@@ -22,7 +22,9 @@ module NetworkRail
       
       operator_code = business_codes[args[:operator]]
       
-      client.subscribe("/topic/TRAIN_MVT_#{operator_code}_TOC") do |msg|
+      client.subscribe("/topic/TRAIN_MVT_#{operator_code}_TOC") do |message|
+        movements = JSON.parse message
+        movements.each {|movement| yield NetworkRail::Message::TrainMovement.factory(movement) }
       end
     end
     
