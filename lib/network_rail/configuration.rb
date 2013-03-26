@@ -1,6 +1,6 @@
 module NetworkRail
   module Configuration
-    VALID_OPTIONS_KEYS = [:user_name, :password].freeze
+    VALID_OPTIONS_KEYS = [:user_name, :password, :late_threshold].freeze
     
     DEFAULT_USERNAME = nil
     DEFAULT_PASSWORD = nil
@@ -17,7 +17,8 @@ module NetworkRail
     
     def reset
       self.user_name = DEFAULT_USERNAME
-      self.password  = DEFAULT_PASSWORD
+      self.password = DEFAULT_PASSWORD
+      self.late_threshold = 60
       self
     end
   end

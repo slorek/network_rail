@@ -21,6 +21,10 @@ module NetworkRail
           self.time = Time.at (json_message['body']['actual_timestamp'].to_i / 1000).to_i
           self.planned_time = Time.at (json_message['body']['planned_timestamp'].to_i / 1000).to_i
         end
+        
+        def on_time?
+          (time - planned_time) <= NetworkRail.late_threshold
+        end
       end
     end
   end
