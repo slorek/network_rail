@@ -41,7 +41,7 @@ First set your Network Rail user name and password:
 
 You don't need to supply your security token because this isn't yet used (according to the documentation in the [Developer Pack](http://www.networkrail.co.uk/WorkArea/DownloadAsset.aspx?id=30064782140)).
 
-The gem implements a Stomp client to allow you to consume the data feeds, and parses each messages into a convenient Ruby object. Once the client is loaded, it will continue listening for new messages until you tell it to stop.
+The gem implements a [STOMP](http://stomp.github.com/) client to allow you to consume the data feeds, and parses each messages into a convenient Ruby object. Once the client is loaded, it will continue listening for new messages until you tell it to stop.
 
 ### Starting the client
 
@@ -57,7 +57,9 @@ Each client can listen to one or more data feeds. You need to specify a feed to 
       # Do something
     end
 
-Messages will begin to arrive from Network Rail in batches every few seconds. In the above example, `movement` will be an instance of a subclass of `NetworkRail::Message::TrainMovement` (e.g. `NetworkRail::Message::TrainMovement::Arrival`). Some of the cool things you can do with this object are:
+Refer to [NetworkRail::Client#business_codes](https://github.com/slorek/network_rail/blob/master/lib/network_rail/client.rb) for a list of all supported operator arguments.
+
+Messages will begin to arrive from Network Rail in batches every few seconds. In the above example, `movement` will be an instance of a subclass of `NetworkRail::Message::TrainMovement::Base` (e.g. `NetworkRail::Message::TrainMovement::Arrival`). Some of the cool things you can do with this object are:
 
 - Check if the train arrived on time with `movement.on_time?`
 - Get the delay (if any) with `movement.delay`
