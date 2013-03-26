@@ -29,5 +29,11 @@ describe NetworkRail::Message::TrainMovement::Movement do
       object.time.should be_a Time
       object.time.year.should == 2013
     end
+
+    it "converts planned_timestamp to Time and assigns to #planned_time" do
+      object = described_class.new @messages.first
+      object.planned_time.should be_a Time
+      object.planned_time.year.should == 2013
+    end
   end
 end
