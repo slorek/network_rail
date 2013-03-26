@@ -1,15 +1,16 @@
 require 'spec_helper'
 
 describe NetworkRail::Client do
+  before do
+    @stomp_client = stub("Stomp::Client",
+      open?: true,
+      protocol: Stomp::SPL_11,
+      connection_frame: stub(command: true),
+      subscribe: stub(true)
+    )
+  end
+
   describe "#new" do
-    before do
-      @stomp_client = stub("Stomp::Client",
-        open?: true,
-        protocol: Stomp::SPL_11,
-        connection_frame: stub(command: true)
-      )
-    end
-    
     context "without login credentials" do
       it "raises an exception" do
         lambda {
@@ -72,6 +73,39 @@ describe NetworkRail::Client do
             client.should be_kind_of described_class
           end
         end
+      end
+    end
+  end
+  
+  describe "#train_movements" do
+    
+    before do
+      NetworkRail.configure do |config|
+        config.user_name = 'test'
+        config.password = 'test'
+      end
+      Stomp::Client.stub(:new).and_return(@stomp_client)
+      
+      @client = described_class.new
+    end
+    
+    context "with no block" do
+      it "raises an exception" do
+        lambda { @client.train_movements }.should raise_exception(NetworkRail::Exception::BlockRequired)
+      end
+    end
+    
+    context "with no train operator parameter" do
+      it "defaults to all train operators and subscribes to the train movements feed" do
+        @stomp_client.should_receive(:subscribe).once.with("/topic/TRAIN_MVT_ALL_TOC")
+        @client.train_movements {|i| }
+      end
+    end
+    
+    context "with train operator parameter" do
+      it "maps the operator parameter to the Network Rail business code and subscribes to the train movements feed" do
+        @stomp_client.should_receive(:subscribe).once.with("/topic/TRAIN_MVT_HY_TOC")
+        @client.train_movements(operator: :south_west_trains) {|i| }
       end
     end
   end
