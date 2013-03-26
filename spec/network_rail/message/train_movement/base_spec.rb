@@ -7,4 +7,16 @@ describe NetworkRail::Message::TrainMovement::Base do
       described_class.factory('test')
     end
   end
+  
+  describe "#initialize" do
+    
+    before do
+      @messages = JSON.parse fixture('train_movements.json')
+    end
+    
+    it "assigns the original parsed JSON message to #original_message" do
+      object = described_class.new @messages.first
+      object.original_message.should == @messages.first
+    end
+  end
 end
