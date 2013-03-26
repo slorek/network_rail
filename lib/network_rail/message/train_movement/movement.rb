@@ -23,7 +23,11 @@ module NetworkRail
         end
         
         def on_time?
-          (time - planned_time) <= NetworkRail.late_threshold
+          delay <= NetworkRail.late_threshold
+        end
+        
+        def delay
+          (time - planned_time).round
         end
       end
     end

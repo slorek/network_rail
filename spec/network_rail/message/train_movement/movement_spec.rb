@@ -35,7 +35,7 @@ describe NetworkRail::Message::TrainMovement::Movement do
   
   describe "#on_time?" do
     context "when within the late threshold" do
-      it "should return true" do
+      it "returns true" do
         object = described_class.new @messages.first
         object.time = Time.now
         object.planned_time = Time.now - 1.minute
@@ -44,12 +44,21 @@ describe NetworkRail::Message::TrainMovement::Movement do
     end
 
     context "when outside the late threshold" do
-      it "should return true" do
+      it "returns false" do
         object = described_class.new @messages.first
         object.time = Time.now
         object.planned_time = Time.now - 1.hour
         object.on_time?.should == false
       end
+    end
+  end
+  
+  describe "#delay" do
+    it "returns the difference in seconds between #time and #planned_time" do
+      object = described_class.new @messages.first
+      object.time = Time.now
+      object.planned_time = Time.now - 1.hour
+      object.delay.should == 3600
     end
   end
 end
