@@ -1,4 +1,4 @@
-module NationalRail
+module NetworkRail
   module Exception
     class ConnectionError < ::Exception
     end

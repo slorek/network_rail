@@ -1,13 +1,13 @@
-module NationalRail
+module NetworkRail
   class Client
     
     HOST_NAME = 'datafeeds.networkrail.co.uk'
     HOST_PORT = 61618
     
     def initialize
-      raise Exception::NoLoginCredentials if NationalRail.user_name.nil? or NationalRail.password.nil?
+      raise Exception::NoLoginCredentials if NetworkRail.user_name.nil? or NetworkRail.password.nil?
       
-      client = Stomp::Client.new(connection_parameters)
+      self.client = Stomp::Client.new(connection_parameters)
       
       raise Exception::ConnectionError unless client.open?
       
@@ -18,6 +18,9 @@ module NationalRail
     end
     
     private
+    
+      attr_accessor :client
+    
       def connection_headers
         {
           "accept-version" => "1.1",
@@ -29,8 +32,8 @@ module NationalRail
         {
           hosts: [
             {
-              login:    NationalRail.user_name,
-              passcode: NationalRail.password,
+              login:    NetworkRail.user_name,
+              passcode: NetworkRail.password,
               host:     HOST_NAME,
               port:     HOST_PORT
             }

@@ -1,16 +1,16 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'national_rail/version'
+require 'network_rail/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "national_rail"
-  spec.version       = NationalRail::VERSION
+  spec.name          = "network_rail"
+  spec.version       = NetworkRail::VERSION
   spec.authors       = ["Steve Lorek"]
   spec.email         = ["steve@stevelorek.com"]
-  spec.description   = %q{Provides a Ruby wrapper for consuming National Rail Data Feeds}
-  spec.summary       = %q{Ruby wrapper for consuming National Rail Data Feeds}
-  spec.homepage      = "http://github.com/slorek/national_rail"
+  spec.description   = %q{Provides a Ruby wrapper for consuming Network Rail Data Feeds}
+  spec.summary       = %q{Ruby wrapper for consuming Network Rail Data Feeds}
+  spec.homepage      = "http://github.com/slorek/network_rail"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)

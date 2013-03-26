@@ -1,4 +1,4 @@
-module NationalRail
+module NetworkRail
   module Configuration
     VALID_OPTIONS_KEYS = [:user_name, :password].freeze
     

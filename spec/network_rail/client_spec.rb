@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe NationalRail::Client do
+describe NetworkRail::Client do
   describe "#new" do
     before do
       @stomp_client = stub("Stomp::Client",
@@ -14,13 +14,13 @@ describe NationalRail::Client do
       it "raises an exception" do
         lambda {
           client = described_class.new
-        }.should raise_exception(NationalRail::Exception::NoLoginCredentials)
+        }.should raise_exception(NetworkRail::Exception::NoLoginCredentials)
       end
     end
 
     context "with login credentials" do
       before(:all) do        
-        NationalRail.configure do |config|
+        NetworkRail.configure do |config|
           config.user_name = 'test'
           config.password = 'test'
         end
@@ -44,7 +44,7 @@ describe NationalRail::Client do
             @stomp_client.stub(:open?).and_return(false)
             lambda {
               client = described_class.new
-            }.should raise_exception(NationalRail::Exception::ConnectionError)
+            }.should raise_exception(NetworkRail::Exception::ConnectionError)
           end
         end
 
@@ -53,7 +53,7 @@ describe NationalRail::Client do
             @stomp_client.stub(:connection_frame).and_return(stub(command: Stomp::CMD_ERROR, body: "java.lang.SecurityException: User name [test] or password is invalid. (RuntimeError)"))
             lambda {
               client = described_class.new
-            }.should raise_exception(NationalRail::Exception::AuthenticationError)
+            }.should raise_exception(NetworkRail::Exception::AuthenticationError)
           end
         end
 
@@ -62,7 +62,7 @@ describe NationalRail::Client do
             @stomp_client.stub(:connection_frame).and_return(stub(command: Stomp::CMD_ERROR, body: ''))
             lambda {
               client = described_class.new
-            }.should raise_exception(NationalRail::Exception::ConnectionError)
+            }.should raise_exception(NetworkRail::Exception::ConnectionError)
           end
         end
         
