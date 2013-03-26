@@ -1,0 +1,82 @@
+module NetworkRail
+  module Operators
+    def self.business_codes
+      {
+        all: 'ALL',
+        all_passenger: 'PASSENGER',
+        freight: 'GENERAL',
+        arriva_trains_wales: 'HL',
+        c2c: 'HT',
+        chiltern_railway: 'HO',
+        cross_country: 'EH',
+        devon_and_cornwall_railway: 'EN',
+        east_midlands_trains: 'EM',
+        east_coast: 'HB',
+        eurostar: 'GA',
+        first_capital_connect: 'EG',
+        first_great_western: 'EF',
+        first_hull_trains: 'PF',
+        first_scotrail: 'HA',
+        first_transpennine_xpress: 'EA',
+        gatwick_express: 'HV',
+        grand_central: 'EC',
+        heathrow_connect: 'EE',
+        heathrow_express: 'HM',
+        island_lines: 'HZ',
+        london_midland: 'EJ',
+        london_overground: 'EK',
+        london_underground_bakerloo_line: 'XC',
+        london_underground_district_line_wimbledon: 'XB',
+        london_underground_district_line_richmond: 'XE',
+        merseyrail: 'HE',
+        greater_anglia: 'EB',
+        nexus: 'PG',
+        north_yorkshire_moors_railway: 'PR',
+        northern_rail: 'ED',
+        south_west_trains: 'HY',
+        south_eastern: 'HU',
+        southern: 'HW',
+        virgin_trains: 'HF',
+        west_coast_railway: 'PA'
+      }
+    end
+
+    def self.numeric_codes
+      {
+        arriva_trains_wales: 71,
+        c2c: 79,
+        chiltern_railway: 74,
+        cross_country: 27,
+        devon_and_cornwall_railway: 34,
+        east_midlands_trains: 28,
+        east_coast: 61,
+        eurostar: 6,
+        first_capital_connect: 26,
+        first_great_western: 25,
+        first_hull_trains: 55,
+        first_scotrail: 60,
+        first_transpennine_xpress: 20,
+        gatwick_express: 81,
+        grand_central: 22,
+        heathrow_connect: 24,
+        heathrow_express: 86,
+        island_lines: 85,
+        london_midland: 29,
+        london_overground: 30,
+        london_underground_bakerloo_line: 91,
+        london_underground_district_line_wimbledon: 90,
+        london_underground_district_line_richmond: 93,
+        merseyrail: 64,
+        greater_anglia: 21,
+        nexus: 56,
+        north_yorkshire_moors_railway: 51,
+        northern_rail: 23,
+        south_west_trains: 84,
+        south_eastern: 80,
+        southern: 82,
+        virgin_trains: 65,
+        west_coast_railway: 50
+      }
+    end
+  end
+end

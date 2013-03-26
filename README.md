@@ -57,7 +57,7 @@ Each client can listen to one or more data feeds. You need to specify a feed to 
       # Do something
     end
 
-Refer to [NetworkRail::Client#business_codes](https://github.com/slorek/network_rail/blob/master/lib/network_rail/client.rb) for a list of all supported operator arguments.
+Refer to [NetworkRail::Operators#business_codes](https://github.com/slorek/network_rail/blob/master/lib/network_rail/operators.rb) for a list of all supported operator arguments.
 
 Messages will begin to arrive from Network Rail in batches every few seconds. In the above example, `movement` will be an instance of a subclass of `NetworkRail::Message::TrainMovement::Base` (e.g. `NetworkRail::Message::TrainMovement::Arrival`). Some of the cool things you can do with this object are:
 

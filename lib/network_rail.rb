@@ -1,3 +1,4 @@
+require "network_rail/operators"
 require "network_rail/client"
 require "network_rail/configuration"
 require "network_rail/version"

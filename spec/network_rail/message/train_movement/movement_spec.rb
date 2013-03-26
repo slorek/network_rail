@@ -31,6 +31,11 @@ describe NetworkRail::Message::TrainMovement::Movement do
       object.planned_time.should be_a Time
       object.planned_time.year.should == 2013
     end
+
+    it "converts toc_id to a symbol representing the train operator and assings to #operator" do
+      object = described_class.new @messages.first
+      object.operator.should == :south_west_trains
+    end
   end
   
   describe "#on_time?" do
