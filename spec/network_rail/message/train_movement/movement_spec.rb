@@ -18,4 +18,16 @@ describe NetworkRail::Message::TrainMovement::Movement do
       end
     end
   end
+  
+  describe "#initialize" do
+    before do
+      @messages = JSON.parse fixture('train_movements.json')
+    end
+    
+    it "converts actual_timestamp to Time and assigns to #time" do
+      object = described_class.new @messages.first
+      object.time.should be_a Time
+      object.time.year.should == 2013
+    end
+  end
 end

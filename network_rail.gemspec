@@ -23,4 +23,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec"
   spec.add_runtime_dependency "stomp"
   spec.add_runtime_dependency "json"
+  spec.add_runtime_dependency "date"
 end

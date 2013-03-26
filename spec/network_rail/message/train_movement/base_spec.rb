@@ -9,7 +9,6 @@ describe NetworkRail::Message::TrainMovement::Base do
   end
   
   describe "#initialize" do
-    
     before do
       @messages = JSON.parse fixture('train_movements.json')
     end

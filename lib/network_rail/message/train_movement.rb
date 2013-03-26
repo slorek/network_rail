@@ -1,3 +1,4 @@
+require "date"
 require "network_rail/message/train_movement/movement"
 require "network_rail/message/train_movement/activation"
 require "network_rail/message/train_movement/cancellation"
